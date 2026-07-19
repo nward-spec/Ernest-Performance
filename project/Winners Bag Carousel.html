@@ -1,0 +1,233 @@
+<!--
+  Winner's Bag carousel — Ernest Performance × Dialled In Pod
+  6 frames, Instagram portrait (1080x1350).
+
+  RECONSTRUCTED SKELETON (2026-07-16). Validate against a real build before the
+  first live post. Fill the {{PLACEHOLDER}} tokens each week for the winner.
+
+  Club images: point <img> at assets/products/stack/<club>-stack.png — the
+  PRE-RENDERED single-PNG stacks from tools/compose_club_stack.py. Do NOT try to
+  align head/shaft/grip components here with CSS; see CLAUDE.md for why.
+
+  Render for approval (headless Chromium), one screenshot per .frame:
+    for each element with class "frame": set viewport 1080x1350, clip to its box,
+    screenshot -> out/frame-N.png
+  A quick Playwright loop over document.querySelectorAll('.frame') does this.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>Winner's Bag — Ernest × Dialled In Pod</title>
+<style>
+  :root {
+    --ink: #0e1116;
+    --panel: #161b22;
+    --line: #2a313c;
+    --gold: #c9a24b;
+    --text: #f4f1ea;
+    --muted: #9aa4b2;
+    --frame-w: 1080px;
+    --frame-h: 1350px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #000;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .frame {
+    width: var(--frame-w);
+    height: var(--frame-h);
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(120% 90% at 50% 0%, #1b222c 0%, var(--ink) 60%, #070a0e 100%);
+    margin: 0 auto 40px;
+    padding: 72px 72px 96px;
+    display: flex;
+    flex-direction: column;
+  }
+  .brandbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    letter-spacing: .18em;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .brandbar .x { color: var(--gold); }
+  .kicker {
+    color: var(--gold);
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    font-size: 26px;
+    margin-top: 8px;
+  }
+  h1 { font-size: 96px; line-height: .98; font-weight: 800; margin: 18px 0 8px; }
+  h2 { font-size: 60px; line-height: 1.02; font-weight: 800; margin: 8px 0; }
+  .event { font-size: 30px; color: var(--muted); letter-spacing: .04em; }
+
+  /* Cover: THREE real, complete clubs (three separate stacks) — never three
+     components of one club. */
+  .cover-clubs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .cover-clubs img { width: 100%; height: 92%; object-fit: contain; object-position: bottom; }
+
+  /* Club detail frames */
+  .club-hero {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 46% 54%;
+    align-items: center;
+    gap: 32px;
+  }
+  .club-hero img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+  .specs { display: flex; flex-direction: column; gap: 22px; }
+  .spec {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+  .spec .label { color: var(--muted); letter-spacing: .18em; text-transform: uppercase; font-size: 20px; }
+  .spec .value { font-size: 40px; font-weight: 700; margin-top: 4px; }
+
+  /* Wedges + putter grid. WATCH THIS: it previously overflowed. min-height:0 on
+     the items + overflow guard on the grid prevents content spilling past 1080. */
+  .club-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 20px;
+    margin-top: 24px;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .grid-item {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .grid-item img { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
+  .grid-item .name { font-size: 26px; font-weight: 700; margin-top: 10px; }
+  .grid-item .sub { font-size: 20px; color: var(--muted); }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 22px;
+    letter-spacing: .06em;
+  }
+  .swipe { color: var(--gold); font-weight: 700; }
+  .cta { text-align: center; margin: auto 0; }
+  .cta h2 { font-size: 72px; }
+  .cta p { font-size: 30px; color: var(--muted); margin-top: 20px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- FRAME 1 — COVER (three complete clubs) -->
+<section class="frame" id="frame-1">
+  <div class="brandbar"><span>Ernest Performance</span><span class="x">×</span><span>Dialled In Pod</span></div>
+  <div class="kicker">Winner's Bag</div>
+  <h1>{{WINNER_NAME}}</h1>
+  <div class="event">{{TOURNAMENT}} · {{DATE}}</div>
+  <div class="cover-clubs">
+    <img src="assets/products/stack/driver-stack.png" alt="Driver">
+    <img src="assets/products/stack/7iron-stack.png"  alt="7 Iron">
+    <img src="assets/products/stack/putter-stack.png" alt="Putter">
+  </div>
+  <div class="footer"><span>What's In The Bag</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- FRAME 2 — DRIVER + WOODS -->
+<section class="frame" id="frame-2">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span>Winner's Bag</span></div>
+  <div class="kicker">Off The Tee</div>
+  <div class="club-hero">
+    <img src="assets/products/stack/driver-stack.png" alt="Driver">
+    <div class="specs">
+      <h2>{{DRIVER_MODEL}}</h2>
+      <div class="spec"><div class="label">Loft</div><div class="value">{{DRIVER_LOFT}}</div></div>
+      <div class="spec"><div class="label">Shaft</div><div class="value">{{DRIVER_SHAFT}}</div></div>
+      <div class="spec"><div class="label">Fairway</div><div class="value">{{FAIRWAY_MODEL}}</div></div>
+    </div>
+  </div>
+  <div class="footer"><span>1 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- FRAME 3 — IRONS -->
+<section class="frame" id="frame-3">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span>Winner's Bag</span></div>
+  <div class="kicker">The Irons</div>
+  <div class="club-hero">
+    <img src="assets/products/stack/7iron-stack.png" alt="Irons">
+    <div class="specs">
+      <h2>{{IRON_MODEL}}</h2>
+      <div class="spec"><div class="label">Set</div><div class="value">{{IRON_SET}}</div></div>
+      <div class="spec"><div class="label">Shaft</div><div class="value">{{IRON_SHAFT}}</div></div>
+      <div class="spec"><div class="label">Grip</div><div class="value">{{IRON_GRIP}}</div></div>
+    </div>
+  </div>
+  <div class="footer"><span>2 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- FRAME 4 — WEDGES + PUTTER (grid; watch for overflow) -->
+<section class="frame" id="frame-4">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span>Winner's Bag</span></div>
+  <div class="kicker">Wedges &amp; Putter</div>
+  <div class="club-grid">
+    <div class="grid-item"><img src="assets/products/stack/pw-stack.png" alt=""><div class="name">{{WEDGE_1}}</div><div class="sub">{{WEDGE_1_LOFT}}</div></div>
+    <div class="grid-item"><img src="assets/products/stack/gw-stack.png" alt=""><div class="name">{{WEDGE_2}}</div><div class="sub">{{WEDGE_2_LOFT}}</div></div>
+    <div class="grid-item"><img src="assets/products/stack/sw-stack.png" alt=""><div class="name">{{WEDGE_3}}</div><div class="sub">{{WEDGE_3_LOFT}}</div></div>
+    <div class="grid-item"><img src="assets/products/stack/lw-stack.png" alt=""><div class="name">{{WEDGE_4}}</div><div class="sub">{{WEDGE_4_LOFT}}</div></div>
+    <div class="grid-item" style="grid-column: span 4;"><img src="assets/products/stack/putter-stack.png" alt=""><div class="name">{{PUTTER_MODEL}}</div><div class="sub">{{PUTTER_LENGTH}}</div></div>
+  </div>
+  <div class="footer"><span>3 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- FRAME 5 — BALL + SPECS -->
+<section class="frame" id="frame-5">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span>Winner's Bag</span></div>
+  <div class="kicker">The Ball &amp; The Numbers</div>
+  <div class="club-hero">
+    <img src="assets/products/stack/ball-stack.png" alt="Golf ball">
+    <div class="specs">
+      <h2>{{BALL_MODEL}}</h2>
+      <div class="spec"><div class="label">Winning Score</div><div class="value">{{WINNING_SCORE}}</div></div>
+      <div class="spec"><div class="label">Margin</div><div class="value">{{MARGIN}}</div></div>
+      <div class="spec"><div class="label">Notable</div><div class="value">{{NOTABLE_STAT}}</div></div>
+    </div>
+  </div>
+  <div class="footer"><span>4 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- FRAME 6 — OUTRO / CTA -->
+<section class="frame" id="frame-6">
+  <div class="brandbar"><span>Ernest Performance</span><span class="x">×</span><span>Dialled In Pod</span></div>
+  <div class="cta">
+    <div class="kicker">Winner's Bag</div>
+    <h2>Dialled In?</h2>
+    <p>Full breakdown &amp; the week's talking points on the Dialled In Pod.<br>Follow @ernestperformance for next week's Winner's Bag.</p>
+  </div>
+  <div class="footer"><span>5 / 6</span><span>@dialledinpod</span></div>
+</section>
+
+</body>
+</html>

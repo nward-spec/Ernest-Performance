@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Winner's Bag — Chris Gotterup — John Deere Classic 2026</title>
+<style>
+  :root{
+    --ink:#0e1116; --panel:#161b22; --line:#2a313c;
+    --gold:#c9a24b; --gold-2:#e7c877; --text:#f4f1ea; --muted:#9aa4b2;
+    --fw:1080px; --fh:1350px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#000;font-family:"Helvetica Neue",Arial,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;}
+  .frame{
+    width:var(--fw);height:var(--fh);position:relative;overflow:hidden;
+    background:radial-gradient(120% 85% at 50% -5%,#1e2732 0%,var(--ink) 55%,#05080c 100%);
+    margin:0 auto 44px;padding:74px 74px 92px;display:flex;flex-direction:column;
+  }
+  .frame::after{content:"";position:absolute;inset:26px;border:1px solid rgba(201,162,75,.28);border-radius:6px;pointer-events:none;}
+  .brandbar{display:flex;align-items:center;gap:16px;letter-spacing:.2em;font-size:21px;text-transform:uppercase;color:var(--muted);z-index:1;}
+  .brandbar .x{color:var(--gold);font-size:24px;}
+  .brandbar .sp{margin-left:auto;}
+  .kicker{color:var(--gold);letter-spacing:.34em;text-transform:uppercase;font-size:25px;margin-top:14px;font-weight:700;}
+  h1{font-size:104px;line-height:.94;font-weight:800;margin:16px 0 10px;letter-spacing:-.5px;}
+  h2{font-size:58px;line-height:1;font-weight:800;margin:2px 0;}
+  .event{font-size:29px;color:var(--muted);letter-spacing:.03em;}
+  .gold{color:var(--gold);}
+  /* cover */
+  .cover-clubs{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-items:end;justify-items:center;gap:20px;margin-top:10px;}
+  .cover-clubs svg{height:76%;width:auto;filter:drop-shadow(0 24px 40px rgba(0,0,0,.55));}
+  .cover-clubs .cap{position:absolute;bottom:-6px;font-size:19px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .cc{position:relative;height:100%;display:flex;align-items:end;justify-content:center;}
+  /* club hero */
+  .hero{flex:1;display:grid;grid-template-columns:42% 58%;align-items:stretch;gap:30px;min-height:0;}
+  .hero .art{min-height:0;display:flex;align-items:center;justify-content:center;}
+  .hero .art svg{max-height:86%;max-width:100%;width:auto;height:auto;filter:drop-shadow(0 24px 40px rgba(0,0,0,.55));}
+  .specs{display:flex;flex-direction:column;justify-content:center;gap:20px;}
+  .spec{border-top:1px solid var(--line);padding-top:14px;}
+  .spec .label{color:var(--muted);letter-spacing:.18em;text-transform:uppercase;font-size:19px;}
+  .spec .value{font-size:38px;font-weight:700;margin-top:3px;line-height:1.05;}
+  .spec .value small{font-size:24px;color:var(--muted);font-weight:600;}
+  /* grid */
+  .grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:18px;margin-top:16px;min-height:0;overflow:hidden;}
+  .cell{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 14px 18px;display:flex;flex-direction:column;align-items:center;min-height:0;}
+  .cell svg{flex:1;min-height:0;width:auto;max-width:80%;}
+  .cell .nm{font-size:23px;font-weight:700;margin-top:8px;text-align:center;line-height:1.1;}
+  .cell .sub{font-size:19px;color:var(--gold);margin-top:2px;}
+  .cell.wide{grid-column:span 4;flex-direction:row;justify-content:center;gap:26px;padding:14px 20px;}
+  .cell.wide svg{max-width:none;height:100%;}
+  .cell.wide .txt{display:flex;flex-direction:column;justify-content:center;}
+  .cell.wide .nm{font-size:34px;margin:0;text-align:left;}
+  .cell.wide .sub{font-size:23px;margin-top:4px;}
+  /* footer */
+  .footer{margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:21px;letter-spacing:.06em;z-index:1;}
+  .swipe{color:var(--gold);font-weight:700;}
+  .cta{margin:auto 0;text-align:center;}
+  .cta h2{font-size:70px;margin-bottom:18px;}
+  .cta p{font-size:29px;color:var(--muted);line-height:1.5;}
+  .stat-row{display:flex;gap:26px;margin-top:8px;}
+  .stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 20px;}
+  .stat .n{font-size:52px;font-weight:800;color:var(--gold);}
+  .stat .l{font-size:20px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<!-- ============ SVG CLUB LIBRARY (self-contained, no external assets) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="shaft" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#7d8794"/><stop offset=".5" stop-color="#e9edf2"/><stop offset="1" stop-color="#7d8794"/>
+  </linearGradient>
+  <linearGradient id="grip" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2a2a2e"/><stop offset="1" stop-color="#111114"/>
+  </linearGradient>
+  <linearGradient id="head" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#20304f"/><stop offset="1" stop-color="#0f1a30"/>
+  </linearGradient>
+  <linearGradient id="pearl" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d7dae0"/>
+  </linearGradient>
+
+  <!-- shared grip + shaft; head drawn per club below -->
+  <g id="stem">
+    <rect x="118" y="28" width="34" height="182" rx="16" fill="url(#grip)" stroke="#3a3a40" stroke-width="1.5"/>
+    <rect x="120" y="44" width="30" height="6" rx="3" fill="var(--gold)" opacity=".8"/>
+    <rect x="130" y="200" width="10" height="640" fill="url(#shaft)"/>
+  </g>
+
+  <symbol id="club-driver" viewBox="0 0 270 1040">
+    <use href="#stem"/>
+    <path d="M135 838 C 92 838 40 866 40 908 C 40 956 108 984 168 984 C 224 984 250 950 250 916 C 250 872 196 838 135 838 Z"
+          fill="url(#head)" stroke="var(--gold)" stroke-width="2.5"/>
+    <path d="M74 890 C 122 872 198 878 232 904" fill="none" stroke="#5b7bb0" stroke-width="3" opacity=".7"/>
+    <circle cx="135" cy="912" r="7" fill="var(--gold)" opacity=".9"/>
+  </symbol>
+
+  <symbol id="club-iron" viewBox="0 0 270 1040">
+    <use href="#stem"/>
+    <path d="M135 838 L128 872 L108 892 L214 918 L228 900 L150 862 Z"
+          fill="url(#head)" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round"/>
+    <g stroke="#5b7bb0" stroke-width="2.4" opacity=".65">
+      <line x1="140" y1="878" x2="205" y2="900"/><line x1="134" y1="888" x2="200" y2="908"/>
+      <line x1="128" y1="898" x2="194" y2="915"/>
+    </g>
+  </symbol>
+
+  <symbol id="club-wedge" viewBox="0 0 270 1040">
+    <use href="#stem"/>
+    <path d="M135 832 L124 872 L104 900 L212 930 L232 908 L150 858 Z"
+          fill="url(#head)" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round"/>
+    <g stroke="#5b7bb0" stroke-width="2.2" opacity=".6">
+      <line x1="138" y1="880" x2="206" y2="906"/><line x1="132" y1="890" x2="200" y2="915"/>
+      <line x1="126" y1="900" x2="194" y2="923"/><line x1="120" y1="910" x2="188" y2="930"/>
+    </g>
+  </symbol>
+
+  <symbol id="club-putter" viewBox="0 0 270 1040">
+    <use href="#stem"/>
+    <path d="M135 840 q-6 26 -30 30" fill="none" stroke="url(#shaft)" stroke-width="10"/>
+    <rect x="70" y="884" width="168" height="58" rx="12" fill="url(#head)" stroke="var(--gold)" stroke-width="2.5"/>
+    <line x1="154" y1="884" x2="154" y2="942" stroke="var(--gold)" stroke-width="3" opacity=".85"/>
+  </symbol>
+
+  <symbol id="ball" viewBox="0 0 260 260">
+    <circle cx="130" cy="130" r="112" fill="url(#pearl)" stroke="var(--gold)" stroke-width="3"/>
+    <g fill="#c3c7cf" opacity=".8">
+      <circle cx="130" cy="70" r="8"/><circle cx="92" cy="92" r="8"/><circle cx="168" cy="92" r="8"/>
+      <circle cx="70" cy="130" r="8"/><circle cx="130" cy="130" r="8"/><circle cx="190" cy="130" r="8"/>
+      <circle cx="92" cy="168" r="8"/><circle cx="168" cy="168" r="8"/><circle cx="130" cy="190" r="8"/>
+      <circle cx="110" cy="110" r="6"/><circle cx="150" cy="110" r="6"/><circle cx="110" cy="150" r="6"/><circle cx="150" cy="150" r="6"/>
+    </g>
+  </symbol>
+</defs></svg>
+
+<!-- ================= FRAME 1 — COVER ================= -->
+<section class="frame" id="f1">
+  <div class="brandbar"><span>Ernest Performance</span><span class="x">×</span><span>Dialled In Pod</span></div>
+  <div class="kicker">Winner's Bag</div>
+  <h1>Chris<br>Gotterup</h1>
+  <div class="event">John Deere Classic · <span class="gold">20-under 264</span> · July 2026</div>
+  <div class="cover-clubs">
+    <div class="cc"><svg viewBox="0 0 270 1040"><use href="#club-driver"/></svg><span class="cap">Driver</span></div>
+    <div class="cc"><svg viewBox="0 0 270 1040"><use href="#club-iron"/></svg><span class="cap">Irons</span></div>
+    <div class="cc"><svg viewBox="0 0 270 1040"><use href="#club-putter"/></svg><span class="cap">Putter</span></div>
+  </div>
+  <div class="footer"><span>What's In The Bag</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- ================= FRAME 2 — OFF THE TEE ================= -->
+<section class="frame" id="f2">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span class="sp">Winner's Bag</span></div>
+  <div class="kicker">Off The Tee</div>
+  <div class="hero">
+    <div class="art"><svg viewBox="0 0 270 1040"><use href="#club-driver"/></svg></div>
+    <div class="specs">
+      <h2>Ping G440 LST</h2>
+      <div class="spec"><div class="label">Loft</div><div class="value">7.5°</div></div>
+      <div class="spec"><div class="label">Shaft</div><div class="value">HZRDUS Smoke Black 70</div></div>
+      <div class="spec"><div class="label">Also in the bag</div><div class="value" style="font-size:31px">TaylorMade BRNR Mini · Qi4D 7-wood</div></div>
+    </div>
+  </div>
+  <div class="footer"><span>1 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- ================= FRAME 3 — IRONS ================= -->
+<section class="frame" id="f3">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span class="sp">Winner's Bag</span></div>
+  <div class="kicker">The Irons</div>
+  <div class="hero">
+    <div class="art"><svg viewBox="0 0 270 1040"><use href="#club-iron"/></svg></div>
+    <div class="specs">
+      <h2>Bridgestone<br>220 Series MB</h2>
+      <div class="spec"><div class="label">Set</div><div class="value">4 – 9 iron</div></div>
+      <div class="spec"><div class="label">Note</div><div class="value">First win with Bridgestone irons in 7 years</div></div>
+    </div>
+  </div>
+  <div class="footer"><span>2 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- ================= FRAME 4 — WEDGES & PUTTER ================= -->
+<section class="frame" id="f4">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span class="sp">Winner's Bag</span></div>
+  <div class="kicker">Wedges &amp; Putter</div>
+  <div class="grid">
+    <div class="cell"><svg viewBox="0 0 270 1040"><use href="#club-wedge"/></svg><div class="nm">TM MG5</div><div class="sub">46°</div></div>
+    <div class="cell"><svg viewBox="0 0 270 1040"><use href="#club-wedge"/></svg><div class="nm">TM MG5</div><div class="sub">52°</div></div>
+    <div class="cell"><svg viewBox="0 0 270 1040"><use href="#club-wedge"/></svg><div class="nm">TM MG5</div><div class="sub">56°</div></div>
+    <div class="cell"><svg viewBox="0 0 270 1040"><use href="#club-wedge"/></svg><div class="nm">TM MG5</div><div class="sub">60°</div></div>
+    <div class="cell wide">
+      <svg viewBox="0 0 270 1040"><use href="#club-putter"/></svg>
+      <div class="txt"><div class="nm">TaylorMade Spider Tour X</div><div class="sub">L-Neck · heavily lead-taped</div></div>
+    </div>
+  </div>
+  <div class="footer"><span>3 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- ================= FRAME 5 — THE BALL & THE NUMBERS ================= -->
+<section class="frame" id="f5">
+  <div class="brandbar"><span>Ernest × Dialled In Pod</span><span class="sp">Winner's Bag</span></div>
+  <div class="kicker">The Ball &amp; The Numbers</div>
+  <div class="hero">
+    <div class="art"><svg viewBox="0 0 260 260" style="height:auto;width:82%"><use href="#ball"/></svg></div>
+    <div class="specs">
+      <h2>Bridgestone<br>Tour B X</h2>
+      <div class="spec"><div class="label">With</div><div class="value">MindSet</div></div>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="n">62</div><div class="l">Final Round</div></div>
+    <div class="stat"><div class="n">−20</div><div class="l">To Par</div></div>
+    <div class="stat"><div class="n">3rd</div><div class="l">Win of 2026</div></div>
+  </div>
+  <div class="footer"><span>4 / 6</span><span class="swipe">Swipe →</span></div>
+</section>
+
+<!-- ================= FRAME 6 — OUTRO ================= -->
+<section class="frame" id="f6">
+  <div class="brandbar"><span>Ernest Performance</span><span class="x">×</span><span>Dialled In Pod</span></div>
+  <div class="cta">
+    <div class="kicker">Winner's Bag</div>
+    <h2>Dialled In?</h2>
+    <p>The full breakdown &amp; this week's talking points<br>are on the Dialled In Pod.<br><br><span class="gold">Follow @ernestperformance</span> for next week's Winner's Bag.</p>
+  </div>
+  <div class="footer"><span>5 / 6</span><span>@dialledinpod</span></div>
+</section>
+
+</body>
+</html>

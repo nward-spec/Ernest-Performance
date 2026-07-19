@@ -1,0 +1,17 @@
+{
+  "_comment": "Per-club sources + hosel anchors. Re-populated each week for the winner's bag. Coordinates are in HEAD-image pixels; dial them in per club and re-run the compositor. Never compensate for misalignment in the HTML.",
+  "canvas": { "w": 900, "h": 2400, "bg": [0, 0, 0, 0] },
+  "clubs": {
+    "driver": {
+      "head": "raw/driver-head.png",
+      "shaft": "raw/driver-shaft.png",
+      "grip": "raw/driver-grip.png",
+      "hosel": [430, 90],
+      "hosel_angle": 8.0,
+      "head_scale": 1.0,
+      "shaft_scale": 1.0,
+      "grip_scale": 1.0,
+      "grip_overlap": 0.0
+    }
+  }
+}
