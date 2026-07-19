@@ -1,3 +1,7 @@
-# rendered frames + contact sheets are regenerable build artifacts
+# rendered frames, previews + contact sheets are regenerable build artifacts
 *.png
+*.jpg
+*.jpeg
+*.webp
 frames/
+*/
