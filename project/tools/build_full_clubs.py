@@ -15,7 +15,7 @@ CFG={
  'fairway': dict(edge='bottom', ext=0.90, grip=0.42, label='VENTUS BLACK'),
  'wedge':   dict(edge='bottom', ext=0.85, grip=0.40, label='DYNAMIC GOLD'),
  'irons':   dict(edge='bottom', ext=0.80, grip=0.40, label='DYNAMIC GOLD'),
- 'putter':  dict(edge='bottom', ext=0.75, grip=0.40),
+ 'putter':  dict(edge='bottom', ext=0.62, grip=0.40, shaft_scale=0.42, grip_scale=1.9),
 }
 
 def _load_grip(name):
@@ -72,7 +72,8 @@ def straighten(im,edge):
 
 def build(key,cfg):
     im=trim(Image.open(f'{SRC}/{key}.png').convert('RGBA'))
-    im=straighten(im,cfg['edge'])
+    if cfg.get('rotate'): im=trim(im.rotate(cfg['rotate'],expand=True,resample=Image.BICUBIC))
+    if cfg.get('auto_straighten',True): im=straighten(im,cfg['edge'])
     w,h=im.size; px=im.load()
     a=axis_at(im,cfg['edge'])
     if not a:
@@ -94,19 +95,20 @@ def build(key,cfg):
         for r in runs(al,yy,w):
             head_w=max(head_w,r[1]-r[0]+1)
     head_w=max(head_w,60)
-    sw=max(sw, int(head_w*0.030))            # shaft render width floor
-    grip_w0=head_w*0.10; grip_w1=head_w*0.150 # grips: absolute, not shaft-based
+    shaft_scale=cfg.get('shaft_scale',1.0); grip_scale=cfg.get('grip_scale',1.0)
+    sw=max(sw, int(head_w*0.064))            # shaft render width floor (match hosel/woods)
+    grip_w0=head_w*0.10*grip_scale; grip_w1=head_w*0.150*grip_scale # grips
     ext_len=head_w*3.0; grip_len=head_w*0.95
     ex=c0+ux*(ext_len+grip_len); ey=yb+uy*(ext_len+grip_len)
     pad=int(sw*2+24)
     minx=min(0,ex)-pad;maxx=max(w,ex)+pad;miny=min(0,ey)-pad;maxy=max(h,ey)+pad
     W=int(maxx-minx);H=int(maxy-miny);ox=-int(minx);oy=-int(miny)
     canvas=Image.new('RGBA',(W,H),(0,0,0,0)); d=ImageDraw.Draw(canvas)
-    sx=c0+ox; sy=yb+oy; pxv,pyv=-uy,ux; half=sw/2
+    sx=c0+ox; sy=yb+oy; pxv,pyv=-uy,ux; half=sw*shaft_scale/2
     # real shaft photo (graphite / chrome steel, with its own markings), else synthetic
     shaft_src=SHAFT_MAP.get(key)
     if shaft_src is not None:
-        shw=max(10,int(max(sw, head_w*0.036)))
+        shw=max(8,int(sw*shaft_scale))
         sh=shaft_src.resize((shw,int(ext_len)),Image.LANCZOS)
         canvas.alpha_composite(sh,(int(sx-shw/2),int(sy)))
     else:
