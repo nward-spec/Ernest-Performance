@@ -42,7 +42,7 @@ def shaft_run(alpha,y,w):
 def axis_at(im,edge):
     w,h=im.size; al=im.split()[-1].load()
     yb = h-3 if edge=='bottom' else 2
-    yi = h-3-int(h*0.14) if edge=='bottom' else 2+int(h*0.14)
+    yi = h-3-int(h*0.28) if edge=='bottom' else 2+int(h*0.28)
     r0=shaft_run(al,yb,w); r1=shaft_run(al,yi,w)
     if not r0 or not r1: return None
     c0=(r0[0]+r0[1])/2; c1=(r1[0]+r1[1])/2
@@ -56,7 +56,7 @@ def straighten(im,edge):
     a=axis_at(im,edge)
     if not a: return im
     _,_,ux,uy,_=a
-    if abs(ux)<=0.04: return im   # already near-vertical (force wedges etc. straight)
+    if abs(ux)<=0.02: return im   # already near-vertical (force wedges etc. straight)
     # brute-force the rotation that makes the shaft most vertical (robust to sign)
     best=(abs(ux), 0, im)
     for deg in range(-90,91,4):
