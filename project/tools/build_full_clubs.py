@@ -52,6 +52,18 @@ def axis_at(im,edge):
 def trim(im):
     bb=im.split()[-1].getbbox(); return im.crop(bb) if bb else im
 
+def trim_stub(im, frac=0.20, keep=0.05):
+    """Crop the baked shaft stub off the bottom of a head image, keeping the head
+    + a short hosel, so the composited real shaft starts right at the hosel."""
+    al=im.split()[-1].load(); w,h=im.size
+    widths=[max((b-a+1 for a,b in runs(al,y,w)),default=0) for y in range(h)]
+    hw=max(widths) if widths else w
+    yb=0
+    for y in range(h):
+        if widths[y] > frac*hw: yb=y      # last row still 'head/hosel wide'
+    cut=min(h, yb+int(hw*keep))
+    return trim(im.crop((0,0,w,cut)))
+
 def straighten(im,edge):
     a=axis_at(im,edge)
     if not a: return im
@@ -79,6 +91,7 @@ def build(key,cfg):
     if not a:
         im.save(f'{OUT}/{key}.png'); return f'{key}: no shaft'
     c0,yb,ux,uy,sw=a
+    sw_det=sw
     al=im.split()[-1].load()
     ys=yb+(-1 if cfg['edge']=='bottom' else 1)*int(h*0.06); ys=max(0,min(h-1,ys))
     rr=shaft_run(al,ys,w) or (int(c0-sw/2),int(c0+sw/2))
@@ -95,16 +108,26 @@ def build(key,cfg):
         for r in runs(al,yy,w):
             head_w=max(head_w,r[1]-r[0]+1)
     head_w=max(head_w,60)
+    # find the hosel (top of the baked shaft stub) and crop that stub off the head
+    # so the real shaft starts right at the hosel (shorter shaft, more grip in frame)
+    hosel_y=yb
+    if cfg.get('edge')=='bottom' and cfg.get('trim_stub',True):
+        thr=max(2.0*sw_det, 0.13*head_w)
+        for y in range(h-1,-1,-1):
+            wd=max((b-a2+1 for a2,b in runs(al,y,w)),default=0)
+            if wd>thr: hosel_y=y; break
+    hy=min(h, hosel_y+int(head_w*0.05))
+    head_img=im.crop((0,0,w,hy))
     shaft_scale=cfg.get('shaft_scale',1.0); grip_scale=cfg.get('grip_scale',1.0)
     sw=max(sw, int(head_w*0.064))            # shaft render width floor (match hosel/woods)
     grip_w0=head_w*0.10*grip_scale; grip_w1=head_w*0.150*grip_scale # grips
-    ext_len=head_w*3.0; grip_len=head_w*0.95
+    ext_len=head_w*cfg.get('ext_mul',1.9); grip_len=head_w*0.95
     ex=c0+ux*(ext_len+grip_len); ey=yb+uy*(ext_len+grip_len)
     pad=int(sw*2+24)
     minx=min(0,ex)-pad;maxx=max(w,ex)+pad;miny=min(0,ey)-pad;maxy=max(h,ey)+pad
     W=int(maxx-minx);H=int(maxy-miny);ox=-int(minx);oy=-int(miny)
     canvas=Image.new('RGBA',(W,H),(0,0,0,0)); d=ImageDraw.Draw(canvas)
-    sx=c0+ox; sy=yb+oy; pxv,pyv=-uy,ux; half=sw*shaft_scale/2
+    sx=c0+ox; sy=hosel_y+oy; pxv,pyv=-uy,ux; half=sw*shaft_scale/2
     # real shaft photo (graphite / chrome steel, with its own markings), else synthetic
     shaft_src=SHAFT_MAP.get(key)
     if shaft_src is not None:
@@ -138,7 +161,7 @@ def build(key,cfg):
         gx1=gx0+ux*grip_len; gy1=gy0+uy*grip_len; r=gw1/2
         d.ellipse([gx1-r,gy1-r,gx1+r,gy1+r],fill=(30,30,34,255))
         canvas=canvas.filter(ImageFilter.GaussianBlur(0.4))
-    canvas.alpha_composite(im,(ox,oy))
+    canvas.alpha_composite(head_img,(ox,oy))
     canvas=trim(canvas); canvas.save(f'{OUT}/{key}.png')
     return f'{key}: edge={cfg["edge"]} sw={sw} axis=({ux:.2f},{uy:.2f}) -> {canvas.size}'
 
