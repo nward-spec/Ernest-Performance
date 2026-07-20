@@ -1,7 +1,9 @@
 """Full-club composites: keep the real head+shaft, straighten so the shaft is
 vertical, extend the club's own shaft, cap with a rendered grip. One flat PNG."""
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 import os, math, statistics
+
+FONT='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 
 SRC='project/assets/products/cutout'
 OUT='project/assets/products/fullclub'
@@ -9,12 +11,18 @@ os.makedirs(OUT, exist_ok=True)
 
 # edge the real shaft exits (before straighten); ext/grip lengths (x head-image H)
 CFG={
- 'driver':  dict(edge='bottom', ext=0.85, grip=0.40),
- 'fairway': dict(edge='bottom', ext=0.90, grip=0.42),
- 'wedge':   dict(edge='bottom', ext=0.85, grip=0.40),
- 'irons':   dict(edge='top',    ext=0.80, grip=0.40),
+ 'driver':  dict(edge='bottom', ext=0.85, grip=0.40, label='VENTUS BLACK'),
+ 'fairway': dict(edge='bottom', ext=0.90, grip=0.42, label='VENTUS BLACK'),
+ 'wedge':   dict(edge='bottom', ext=0.85, grip=0.40, label='DYNAMIC GOLD'),
+ 'irons':   dict(edge='bottom', ext=0.80, grip=0.40, label='DYNAMIC GOLD'),
  'putter':  dict(edge='bottom', ext=0.75, grip=0.40),
 }
+
+def _load_grip(name):
+    try: return Image.open(f'{os.path.dirname(SRC)}/raw/{name}').convert('RGBA')
+    except Exception: return None
+_GP=_load_grip('grip-golfpride.png'); _SS=_load_grip('grip-superstroke.png')
+GRIP_MAP={'driver':_GP,'fairway':_GP,'irons':_GP,'wedge':_GP,'putter':_SS}  # Golf Pride / SuperStroke
 
 def runs(alpha,y,w,thr=50):
     out=[];s=None
@@ -99,17 +107,38 @@ def build(key,cfg):
         for j in range(len(prof)):
             frac=(j/(len(prof)-1))-0.5
             d.point((cxp+pxv*frac*2*hw,cyp+pyv*frac*2*hw),fill=prof[j]+(255,))
+    # shaft branding label (reads up the shaft, traditionally mid-shaft)
+    label=cfg.get('label')
+    if label:
+        fs=max(13,int(head_w*0.050))
+        try: fnt=ImageFont.truetype(FONT,fs)
+        except Exception: fnt=ImageFont.load_default()
+        bb=fnt.getbbox(label); tw=bb[2]-bb[0]; th=bb[3]-bb[1]
+        ti=Image.new('RGBA',(tw+10,th+10),(0,0,0,0))
+        ImageDraw.Draw(ti).text((5,5-bb[1]),label,font=fnt,fill=(228,231,236,240))
+        tir=ti.rotate(90,expand=True)
+        t=ext_len*0.52; lx=sx+ux*t; ly=sy+uy*t
+        canvas.alpha_composite(tir,(int(lx-tir.width/2),int(ly-tir.height/2)))
     gx0=sx+ux*ext_len; gy0=sy+uy*ext_len; gw0=grip_w0; gw1=grip_w1
-    for i in range(int(grip_len)+1):
-        f=i/grip_len; cxp=gx0+ux*(grip_len*f); cyp=gy0+uy*(grip_len*f); hw=(gw0+(gw1-gw0)*f)/2
-        base_l=int(20+13*f); d.line([cxp-pxv*hw,cyp-pyv*hw,cxp+pxv*hw,cyp+pyv*hw],fill=(base_l,base_l,base_l+3,255),width=2)
-    for off,shade2 in ((-0.32,(95,97,105,150)),(0.34,(6,6,9,150))):
-        ax=gx0+pxv*gw0*off; ay=gy0+pyv*gw0*off
-        bx=gx0+ux*grip_len+pxv*gw1*off; by=gy0+uy*grip_len+pyv*gw1*off
-        d.line([ax,ay,bx,by],fill=shade2,width=max(2,int(sw*0.4)))
-    gx1=gx0+ux*grip_len; gy1=gy0+uy*grip_len; r=gw1/2
-    d.ellipse([gx1-r,gy1-r,gx1+r,gy1+r],fill=(30,30,34,255))
-    canvas=canvas.filter(ImageFilter.GaussianBlur(0.4))
+    grip_src=GRIP_MAP.get(key)
+    if grip_src is not None:
+        # real grip photo (logo visible), condensed to fit
+        canvas=canvas.filter(ImageFilter.GaussianBlur(0.4))   # soften drawn shaft only
+        gw=max(8,int(grip_w1*1.4))
+        gh=min(int(grip_src.height*gw/grip_src.width), int(head_w*1.6))  # condense if too long
+        gimg=grip_src.resize((gw,gh),Image.LANCZOS)
+        canvas.alpha_composite(gimg,(int(gx0-gw/2), int(gy0-gh*0.03)))
+    else:
+        for i in range(int(grip_len)+1):
+            f=i/grip_len; cxp=gx0+ux*(grip_len*f); cyp=gy0+uy*(grip_len*f); hw=(gw0+(gw1-gw0)*f)/2
+            base_l=int(20+13*f); d.line([cxp-pxv*hw,cyp-pyv*hw,cxp+pxv*hw,cyp+pyv*hw],fill=(base_l,base_l,base_l+3,255),width=2)
+        for off,shade2 in ((-0.32,(95,97,105,150)),(0.34,(6,6,9,150))):
+            ax=gx0+pxv*gw0*off; ay=gy0+pyv*gw0*off
+            bx=gx0+ux*grip_len+pxv*gw1*off; by=gy0+uy*grip_len+pyv*gw1*off
+            d.line([ax,ay,bx,by],fill=shade2,width=max(2,int(sw*0.4)))
+        gx1=gx0+ux*grip_len; gy1=gy0+uy*grip_len; r=gw1/2
+        d.ellipse([gx1-r,gy1-r,gx1+r,gy1+r],fill=(30,30,34,255))
+        canvas=canvas.filter(ImageFilter.GaussianBlur(0.4))
     canvas.alpha_composite(im,(ox,oy))
     canvas=trim(canvas); canvas.save(f'{OUT}/{key}.png')
     return f'{key}: edge={cfg["edge"]} sw={sw} axis=({ux:.2f},{uy:.2f}) -> {canvas.size}'

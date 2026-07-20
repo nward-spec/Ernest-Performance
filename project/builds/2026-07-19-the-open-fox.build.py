@@ -111,7 +111,7 @@ HTML = r'''<!DOCTYPE html>
     <div class="col"><div class="imgwrap"><img class="club" src="__fairway__" alt="Srixon ZXi fairway wood"></div>
       <div class="nm">Srixon ZXi</div><div class="sub">3-Wood &middot; 15&deg;</div></div>
   </div>
-  <div class="spec" style="margin-top:18px"><div class="label">Shafts</div><div class="value" style="font-size:29px">Fujikura Ventus Black 7 TX (driver) &middot; Ventus Black (3W)</div></div>
+  <div class="spec" style="margin-top:16px"><div class="label">Shafts &amp; Grip</div><div class="value" style="font-size:27px">Fujikura Ventus Black 7 TX / Ventus Black &middot; Golf Pride Z-Grip Cord</div></div>
   <div class="footer"><span>1 / 6</span><span class="swipe">Swipe &rarr;</span></div>
 </section>
 
@@ -125,7 +125,7 @@ HTML = r'''<!DOCTYPE html>
       <h2>Srixon<br>ZXi7 &amp; ZXi5</h2>
       <div class="spec"><div class="label">Driving iron</div><div class="value">Srixon ZXi5+ 3-iron <small>&middot; 20&deg;</small></div></div>
       <div class="spec"><div class="label">Set</div><div class="value">ZXi5 (4&ndash;5) &middot; ZXi7 (6&ndash;PW)</div></div>
-      <div class="spec"><div class="label">Shafts</div><div class="value" style="font-size:30px">True Temper Dynamic Gold Tour Issue X100</div></div>
+      <div class="spec"><div class="label">Shaft &amp; Grip</div><div class="value" style="font-size:28px">True Temper Dynamic Gold Tour Issue X100 &middot; Golf Pride Z-Grip Cord</div></div>
     </div>
   </div>
   <div class="footer"><span>2 / 6</span><span class="swipe">Swipe &rarr;</span></div>
