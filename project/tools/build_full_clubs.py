@@ -11,11 +11,14 @@ os.makedirs(OUT, exist_ok=True)
 
 # edge the real shaft exits (before straighten); ext/grip lengths (x head-image H)
 CFG={
- 'driver':  dict(edge='bottom', ext=0.85, grip=0.40, label='VENTUS BLACK'),
- 'fairway': dict(edge='bottom', ext=0.90, grip=0.42, label='VENTUS BLACK'),
- 'wedge':   dict(edge='bottom', ext=0.85, grip=0.40, label='DYNAMIC GOLD'),
- 'irons':   dict(edge='bottom', ext=0.80, grip=0.40, label='DYNAMIC GOLD'),
- 'putter':  dict(edge='bottom', ext=0.62, grip=0.40, shaft_scale=0.55, grip_scale=1.6, grip_cap=1.7, ext_mul=2.7),
+ # woods: leave as they were — adapter kept in the head, original shaft width
+ 'driver':  dict(edge='bottom', trim_stub=False, match_hosel=False),
+ 'fairway': dict(edge='bottom', trim_stub=False, match_hosel=False),
+ # irons/wedges: keep the head LEVEL (no straighten) and force a straight vertical shaft
+ 'wedge':   dict(edge='bottom', auto_straighten=False, force_vertical=True),
+ 'irons':   dict(edge='bottom', auto_straighten=False, force_vertical=True),
+ 'putter':  dict(edge='bottom', auto_straighten=False, force_vertical=True,
+                 shaft_scale=0.55, grip_scale=1.6, grip_cap=1.7, ext_mul=2.7),
 }
 
 def _load_grip(name):
@@ -91,6 +94,7 @@ def build(key,cfg):
     if not a:
         im.save(f'{OUT}/{key}.png'); return f'{key}: no shaft'
     c0,yb,ux,uy,sw=a
+    if cfg.get('force_vertical'): ux,uy=0.0,1.0   # straight vertical shaft; keep head level
     sw_det=sw
     al=im.split()[-1].load()
     ys=yb+(-1 if cfg['edge']=='bottom' else 1)*int(h*0.06); ys=max(0,min(h-1,ys))
@@ -135,7 +139,7 @@ def build(key,cfg):
     # real shaft photo (graphite / chrome steel, with its own markings), else synthetic
     shaft_src=SHAFT_MAP.get(key)
     if shaft_src is not None:
-        shw=max(8,int(hosel_w*shaft_scale))   # match the shaft width to the hosel
+        shw=max(8,int((hosel_w if cfg.get('match_hosel',True) else sw)*shaft_scale))
         sh=shaft_src.resize((shw,int(ext_len)),Image.LANCZOS)
         canvas.alpha_composite(sh,(int(sx-shw/2),int(sy)))
     else:
