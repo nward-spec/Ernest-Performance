@@ -5,3 +5,8 @@
 *.webp
 frames/
 */
+
+# preview/optimized derivatives are regenerable too
+*.jpg
+*.jpeg
+*.webp
