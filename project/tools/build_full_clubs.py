@@ -15,7 +15,7 @@ CFG={
  'fairway': dict(edge='bottom', ext=0.90, grip=0.42, label='VENTUS BLACK'),
  'wedge':   dict(edge='bottom', ext=0.85, grip=0.40, label='DYNAMIC GOLD'),
  'irons':   dict(edge='bottom', ext=0.80, grip=0.40, label='DYNAMIC GOLD'),
- 'putter':  dict(edge='bottom', ext=0.62, grip=0.40, shaft_scale=0.42, grip_scale=1.9),
+ 'putter':  dict(edge='bottom', ext=0.62, grip=0.40, shaft_scale=0.55, grip_scale=1.6, grip_cap=1.7, ext_mul=2.7),
 }
 
 def _load_grip(name):
@@ -118,10 +118,14 @@ def build(key,cfg):
             if wd>thr: hosel_y=y; break
     hy=min(h, hosel_y+int(head_w*0.05))
     head_img=im.crop((0,0,w,hy))
+    # measure the hosel width at the hosel transition, so the shaft matches it
+    hr=shaft_run(al, min(h-1,hosel_y), w)
+    if hr: hosel_w=hr[1]-hr[0]+1; c0=(hr[0]+hr[1])/2.0
+    else:  hosel_w=sw
     shaft_scale=cfg.get('shaft_scale',1.0); grip_scale=cfg.get('grip_scale',1.0)
     sw=max(sw, int(head_w*0.064))            # shaft render width floor (match hosel/woods)
     grip_w0=head_w*0.10*grip_scale; grip_w1=head_w*0.150*grip_scale # grips
-    ext_len=head_w*cfg.get('ext_mul',1.9); grip_len=head_w*0.95
+    ext_len=head_w*cfg.get('ext_mul',2.7); grip_len=head_w*0.95
     ex=c0+ux*(ext_len+grip_len); ey=yb+uy*(ext_len+grip_len)
     pad=int(sw*2+24)
     minx=min(0,ex)-pad;maxx=max(w,ex)+pad;miny=min(0,ey)-pad;maxy=max(h,ey)+pad
@@ -131,7 +135,7 @@ def build(key,cfg):
     # real shaft photo (graphite / chrome steel, with its own markings), else synthetic
     shaft_src=SHAFT_MAP.get(key)
     if shaft_src is not None:
-        shw=max(8,int(sw*shaft_scale))
+        shw=max(8,int(hosel_w*shaft_scale))   # match the shaft width to the hosel
         sh=shaft_src.resize((shw,int(ext_len)),Image.LANCZOS)
         canvas.alpha_composite(sh,(int(sx-shw/2),int(sy)))
     else:
@@ -147,7 +151,7 @@ def build(key,cfg):
         # real grip photo (logo visible), condensed to fit
         canvas=canvas.filter(ImageFilter.GaussianBlur(0.4))   # soften drawn shaft only
         gw=max(8,int(grip_w1*1.4))
-        gh=min(int(grip_src.height*gw/grip_src.width), int(head_w*1.6))  # condense if too long
+        gh=min(int(grip_src.height*gw/grip_src.width), int(head_w*cfg.get('grip_cap',1.15)))  # keep grip shorter than shaft
         gimg=grip_src.resize((gw,gh),Image.LANCZOS)
         canvas.alpha_composite(gimg,(int(gx0-gw/2), int(gy0-gh*0.03)))
     else:
