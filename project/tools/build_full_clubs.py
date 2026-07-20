@@ -23,6 +23,8 @@ def _load_grip(name):
     except Exception: return None
 _GP=_load_grip('grip-golfpride.png'); _SS=_load_grip('grip-superstroke.png')
 GRIP_MAP={'driver':_GP,'fairway':_GP,'irons':_GP,'wedge':_GP,'putter':_SS}  # Golf Pride / SuperStroke
+_GRA=_load_grip('shaft-graphite.png'); _STL=_load_grip('shaft-steel.png')
+SHAFT_MAP={'driver':_GRA,'fairway':_GRA,'irons':_STL,'wedge':_STL}  # real shaft photos (putter=synthetic dark)
 
 def runs(alpha,y,w,thr=50):
     out=[];s=None
@@ -54,7 +56,7 @@ def straighten(im,edge):
     a=axis_at(im,edge)
     if not a: return im
     _,_,ux,uy,_=a
-    if abs(ux)<=0.18: return im   # already near-vertical
+    if abs(ux)<=0.04: return im   # already near-vertical (force wedges etc. straight)
     # brute-force the rotation that makes the shaft most vertical (robust to sign)
     best=(abs(ux), 0, im)
     for deg in range(-90,91,4):
@@ -101,24 +103,19 @@ def build(key,cfg):
     W=int(maxx-minx);H=int(maxy-miny);ox=-int(minx);oy=-int(miny)
     canvas=Image.new('RGBA',(W,H),(0,0,0,0)); d=ImageDraw.Draw(canvas)
     sx=c0+ox; sy=yb+oy; pxv,pyv=-uy,ux; half=sw/2
-    for i in range(int(ext_len)+1):
-        cxp=sx+ux*i; cyp=sy+uy*i; hw=half*(1-0.05*i/ext_len)
-        d.line([cxp-pxv*hw,cyp-pyv*hw,cxp+pxv*hw,cyp+pyv*hw],fill=prof[4]+(255,),width=1)
-        for j in range(len(prof)):
-            frac=(j/(len(prof)-1))-0.5
-            d.point((cxp+pxv*frac*2*hw,cyp+pyv*frac*2*hw),fill=prof[j]+(255,))
-    # shaft branding label (reads up the shaft, traditionally mid-shaft)
-    label=cfg.get('label')
-    if label:
-        fs=max(13,int(head_w*0.050))
-        try: fnt=ImageFont.truetype(FONT,fs)
-        except Exception: fnt=ImageFont.load_default()
-        bb=fnt.getbbox(label); tw=bb[2]-bb[0]; th=bb[3]-bb[1]
-        ti=Image.new('RGBA',(tw+10,th+10),(0,0,0,0))
-        ImageDraw.Draw(ti).text((5,5-bb[1]),label,font=fnt,fill=(228,231,236,240))
-        tir=ti.rotate(90,expand=True)
-        t=ext_len*0.52; lx=sx+ux*t; ly=sy+uy*t
-        canvas.alpha_composite(tir,(int(lx-tir.width/2),int(ly-tir.height/2)))
+    # real shaft photo (graphite / chrome steel, with its own markings), else synthetic
+    shaft_src=SHAFT_MAP.get(key)
+    if shaft_src is not None:
+        shw=max(10,int(max(sw, head_w*0.036)))
+        sh=shaft_src.resize((shw,int(ext_len)),Image.LANCZOS)
+        canvas.alpha_composite(sh,(int(sx-shw/2),int(sy)))
+    else:
+        for i in range(int(ext_len)+1):
+            cxp=sx+ux*i; cyp=sy+uy*i; hw=half*(1-0.05*i/ext_len)
+            d.line([cxp-pxv*hw,cyp-pyv*hw,cxp+pxv*hw,cyp+pyv*hw],fill=prof[4]+(255,),width=1)
+            for j in range(len(prof)):
+                frac=(j/(len(prof)-1))-0.5
+                d.point((cxp+pxv*frac*2*hw,cyp+pyv*frac*2*hw),fill=prof[j]+(255,))
     gx0=sx+ux*ext_len; gy0=sy+uy*ext_len; gw0=grip_w0; gw1=grip_w1
     grip_src=GRIP_MAP.get(key)
     if grip_src is not None:
