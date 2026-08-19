@@ -116,10 +116,10 @@ A shortcut is a pointer, not a copy — ownership does not change.
 
 Audited from the Ernest Performance Drive on 2026-08-18.
 
-**1. `Personal/` (top level, 11 subfolders)** — DECIDED 2026-08-19: **all 11
-treated as personal**, destined for the `NW Personal` tree once
-`nicholasernestward@gmail.com` is authenticated. Not yet actioned — the
-destination tree does not exist.
+**1. `Personal/` (top level, 11 subfolders)** — **OUT OF SCOPE.** Decided
+2026-08-19: Nick relocates these himself, into the Drive of the account they
+belong to, so business stays business and personal stays personal. No
+automated move is planned or should be attempted.
 
 ```
 Health          Finances        Fitness         Home Loan
@@ -127,13 +127,20 @@ Employment      Misc Files      Personal Golf   Spark Email
 Photo Archive - old iPhone      Other Golf Business  *   Sportsbet:BetEasy  *
 ```
 
-`*` — these two read as business rather than personal; flagged at audit, and
-the decision was to move them with the rest.
+`*` — flagged at audit as reading like business rather than personal. Worth a
+second look when sorting, since these two may belong in the Ernest Performance
+tree rather than `NW Personal`.
 
-Ownership caveat: a *move* does not transfer ownership. These folders are owned
-by nward@ernestperformance.com.au and will stay so even after being moved into
-a folder owned by nicholasernestward@gmail.com. Genuine handover needs an
-explicit ownership transfer per item, or a re-upload from the target account.
+Why doing it by hand is the right call: a Drive *move* does not transfer
+ownership. Anything moved from here would stay owned by
+nward@ernestperformance.com.au even once it sat inside a folder owned by
+nicholasernestward@gmail.com — the account separation would be cosmetic.
+Downloading and re-uploading from the personal account makes that account the
+owner, which is a genuine separation. Delete the originals only once the
+re-upload is confirmed.
+
+`NW Personal/` (Job 6) is still built as an empty structure — it provides the
+destination folders to sort into.
 
 **2. `The Open - Driving Irons/`** — DONE 2026-08-19. Moved to
 **`04 - Marketing & Content`**. All 4 raw DJI files (2× MP4, largest 629 MB;
