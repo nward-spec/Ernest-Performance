@@ -116,7 +116,10 @@ A shortcut is a pointer, not a copy — ownership does not change.
 
 Audited from the Ernest Performance Drive on 2026-08-18.
 
-**1. `Personal/` (top level, 11 subfolders)** — move into `NW Personal`, or keep?
+**1. `Personal/` (top level, 11 subfolders)** — DECIDED 2026-08-19: **all 11
+treated as personal**, destined for the `NW Personal` tree once
+`nicholasernestward@gmail.com` is authenticated. Not yet actioned — the
+destination tree does not exist.
 
 ```
 Health          Finances        Fitness         Home Loan
@@ -124,17 +127,25 @@ Employment      Misc Files      Personal Golf   Spark Email
 Photo Archive - old iPhone      Other Golf Business  *   Sportsbet:BetEasy  *
 ```
 
-`*` — these two read as business, not personal. Flagged for a decision before
-anything moves. Note that moving files out of this account changes nothing
-about ownership: they would still be owned by the Ernest Performance account
-unless separately transferred.
+`*` — these two read as business rather than personal; flagged at audit, and
+the decision was to move them with the rest.
 
-**2. `The Open - Driving Irons/` (top level)** — 4 files, all raw DJI capture
-(2× MP4, largest 629 MB; 2× JPG; 13 July 2026). Unedited content footage, not
-supplier material → recommend **`04 - Marketing & Content`**.
+Ownership caveat: a *move* does not transfer ownership. These folders are owned
+by nward@ernestperformance.com.au and will stay so even after being moved into
+a folder owned by nicholasernestward@gmail.com. Genuine handover needs an
+explicit ownership transfer per item, or a re-upload from the target account.
 
-**3. `Saved from Chrome/`** — one file: `Titleist Price List - May 2026.pdf`.
-Supplier pricing → recommend **`05 - Inventory & Suppliers`**, then delete the
-empty folder.
+**2. `The Open - Driving Irons/`** — DONE 2026-08-19. Moved to
+**`04 - Marketing & Content`**. All 4 raw DJI files (2× MP4, largest 629 MB;
+2× JPG) verified present after the move; a folder move carries its contents.
+
+**3. `Saved from Chrome/`** — DONE 2026-08-19. `Titleist Price List - May
+2026.pdf` moved to **`05 - Inventory & Suppliers`**. The folder is now empty
+and can be deleted.
+
+> Follow-up: `05 - Inventory & Suppliers` already contains a `Supplier
+> Catalogs/` subfolder. The Titleist list sits at the top of `05` as approved,
+> but `Supplier Catalogs/` is arguably its better home — say the word and it
+> moves one level down.
 
 **4. `Archive/`** — left alone, as instructed.
