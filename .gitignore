@@ -13,3 +13,24 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Secrets — never commit (see tools/dispatch/gitignore.template)
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.key
+token.json
+tokens.json
+credentials.json
+client_secret*.json
+service_account*.json
+.credentials/
+secrets/
+
+# Local state
+*.sqlite
+*.sqlite3
+*.db
+*.log

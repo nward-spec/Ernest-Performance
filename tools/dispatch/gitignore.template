@@ -1,0 +1,72 @@
+# ---------------------------------------------------------------
+# Secrets — never commit. Anything here that has ALREADY been
+# committed must be removed from history AND the credential rotated;
+# adding it to .gitignore does not untrack or unpublish it.
+# ---------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.key
+
+# OAuth token stores (Google / Gmail / Drive / Xero)
+token.json
+tokens.json
+credentials.json
+client_secret*.json
+service_account*.json
+service-account*.json
+.credentials/
+.tokens/
+secrets/
+
+# ---------------------------------------------------------------
+# Local state — machine-specific, not shareable
+# ---------------------------------------------------------------
+# SQLite idempotency store for the Gmail -> Xero pipeline. Committing
+# it would replay or skip real bills on another machine.
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+idempotency*
+processed*.json
+state.json
+.cache/
+*.log
+logs/
+
+# ---------------------------------------------------------------
+# Language / tooling
+# ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ---------------------------------------------------------------
+# OS / editor
+# ---------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
